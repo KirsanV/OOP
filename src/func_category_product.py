@@ -8,7 +8,7 @@ class Product:
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
         self.description = description
-        self._price = price
+        self.__price = price
         self.quantity = quantity
 
     @classmethod
@@ -28,7 +28,7 @@ class Product:
         """
         Геттер получения цены продукта
         """
-        return self._price
+        return self.__price
 
     @price.setter
     def price(self, qwe: float) -> None:
@@ -38,11 +38,11 @@ class Product:
         if qwe <= 0:
             print("Цена не должна быть нулевая или отрицательная")
             return
-        if qwe < self._price:
-            confirm = input(f"Вы уверены, что хотите понизить цену с {self._price} до {qwe}? (y/n): ")
+        if qwe < self.__price:
+            confirm = input(f"Вы уверены, что хотите понизить цену с {self.__price} до {qwe}? (y/n): ")
             if confirm.lower() != 'y':
                 return
-        self._price = qwe
+        self.__price = qwe
 
 
 class Category:
