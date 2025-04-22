@@ -44,6 +44,20 @@ class Product:
                 return
         self.__price = qwe
 
+    def __str__(self) -> str:
+        """
+        Возвращает строкуL Название продукта, X руб. Остаток: X шт.
+        """
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, second_arg: 'Product') -> float:
+        """
+        Складывает сумму 2ух продуктов
+        """
+        if not isinstance(second_arg, Product):
+            return NotImplemented
+        return (self.price * self.quantity) + (second_arg.price * second_arg.quantity)
+
 
 class Category:
     """
@@ -77,3 +91,10 @@ class Category:
         Считает количество продуктов в списке
         """
         return len(self.__products)
+
+    def __str__(self) -> str:
+        """
+        Возвращает строку: Название категории, количество продуктов: X шт
+        """
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."

@@ -52,6 +52,18 @@ class TestProduct(unittest.TestCase):
             product.price = 44444.0
             self.assertEqual(product.price, 44444.0)
 
+    def test_product_str(self) -> None:
+        """Проверяет вывод строки"""
+        product = Product(name="Смартфон", description="Описание", price=1020.0, quantity=53)
+        self.assertEqual(str(product), "Смартфон, 1020.0 руб. Остаток: 53 шт.")
+
+    def test_product_addition(self) -> None:
+        """Проверка сложения 2ух продуктов"""
+        product1 = Product(name="Продукт 1", description="Описание 1", price=123.0, quantity=123)
+        product2 = Product(name="Продукт 2", description="Описание 2", price=456.0, quantity=456)
+        total_value = product1 + product2
+        self.assertEqual(total_value, (123.0 * 123) + (456.0 * 456))
+
 
 class TestCategory(unittest.TestCase):
     """Тесты для класса Category"""
@@ -88,3 +100,13 @@ class TestCategory(unittest.TestCase):
                                     quantity=5)
         category.add_product(product1)
         self.assertEqual(category.product_count, 1)
+
+    def test_category_str(self) -> None:
+        """тестим вывод строки по классу категория"""
+        category = Category(name="Телефоны", description="лучший тлф")
+        product1 = Product(name="Продукт Айфон", description="Айфон", price=5000.0, quantity=123)
+        product2 = Product(name="Продукт Самсунг", description="Самсунг", price=15000.0, quantity=123)
+        category.add_product(product1)
+        category.add_product(product2)
+        expected_output = "Телефоны, количество продуктов: 246 шт."
+        self.assertEqual(str(category), expected_output)
