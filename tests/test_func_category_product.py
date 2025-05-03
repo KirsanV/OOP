@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.func_category_product import Category, Product
+from src.func_category_product import Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct(unittest.TestCase):
@@ -52,6 +52,18 @@ class TestProduct(unittest.TestCase):
             product.price = 44444.0
             self.assertEqual(product.price, 44444.0)
 
+    def test_product_str(self) -> None:
+        """Проверяет вывод строки"""
+        product = Product(name="Смартфон", description="Описание", price=1020.0, quantity=53)
+        self.assertEqual(str(product), "Смартфон, 1020.0 руб. Остаток: 53 шт.")
+
+    def test_product_addition(self) -> None:
+        """Проверка сложения 2ух продуктов"""
+        product1 = Product(name="Продукт 1", description="Описание 1", price=123.0, quantity=123)
+        product2 = Product(name="Продукт 2", description="Описание 2", price=456.0, quantity=456)
+        total_value = product1 + product2
+        self.assertEqual(total_value, (123.0 * 123) + (456.0 * 456))
+
 
 class TestCategory(unittest.TestCase):
     """Тесты для класса Category"""
@@ -88,3 +100,88 @@ class TestCategory(unittest.TestCase):
                                     quantity=5)
         category.add_product(product1)
         self.assertEqual(category.product_count, 1)
+
+    def test_category_str(self) -> None:
+        """тестим вывод строки по классу категория"""
+        category = Category(name="Телефоны", description="лучший тлф")
+        product1 = Product(name="Продукт Айфон", description="Айфон", price=5000.0, quantity=123)
+        product2 = Product(name="Продукт Самсунг", description="Самсунг", price=15000.0, quantity=123)
+        category.add_product(product1)
+        category.add_product(product2)
+        expected_output = "Телефоны, количество продуктов: 246 шт."
+        self.assertEqual(str(category), expected_output)
+
+
+class TestSmartphone(unittest.TestCase):
+
+    def test_smartphone_initialization(self) -> None:
+        """Проверяет инициализацию объекта Smartphone"""
+        smartphone = Smartphone(
+            name="iPhone 16",
+            description="Лучший смартфон от Apple",
+            price=210000.0,
+            quantity=50,
+            efficiency=95.0,
+            model="A2649",
+            memory=128,
+            color="черный"
+        )
+        self.assertEqual(smartphone.name, "iPhone 16")
+        self.assertEqual(smartphone.description, "Лучший смартфон от Apple")
+        self.assertEqual(smartphone.price, 210000.0)
+        self.assertEqual(smartphone.quantity, 50)
+        self.assertEqual(smartphone.efficiency, 95.0)
+        self.assertEqual(smartphone.model, "A2649")
+        self.assertEqual(smartphone.memory, 128)
+        self.assertEqual(smartphone.color, "черный")
+
+    def test_smartphone_str(self) -> None:
+        """Проверяет вывод строки для смартфона"""
+        smartphone = Smartphone(
+            name="Samsung Galaxy S24",
+            description="Флагман от Samsung",
+            price=250000.0,
+            quantity=30,
+            efficiency=90.0,
+            model="SM-G991B",
+            memory=256,
+            color="синий"
+        )
+        expected_output = "Samsung Galaxy S24, 250000.0 руб. Остаток: 30 шт."
+        self.assertEqual(str(smartphone), expected_output)
+
+
+class TestLawnGrass(unittest.TestCase):
+
+    def test_lawn_grass_initialization(self) -> None:
+        """Проверяет инициализацию объекта LawnGrass"""
+        lawn_grass = LawnGrass(
+            name="Газонная трава",
+            description="Полынь",
+            price=25.0,
+            quantity=100,
+            country="Россия",
+            germination_period="7-14 дней",
+            color="зеленый"
+        )
+        self.assertEqual(lawn_grass.name, "Газонная трава")
+        self.assertEqual(lawn_grass.description, "Полынь")
+        self.assertEqual(lawn_grass.price, 25.0)
+        self.assertEqual(lawn_grass.quantity, 100)
+        self.assertEqual(lawn_grass.country, "Россия")
+        self.assertEqual(lawn_grass.germination_period, "7-14 дней")
+        self.assertEqual(lawn_grass.color, "зеленый")
+
+    def test_lawn_grass_str(self) -> None:
+        """Проверяет вывод строки для газонной травы"""
+        lawn_grass = LawnGrass(
+            name="Газончик",
+            description="Готовый газон в рулонах",
+            price=321.0,
+            quantity=123,
+            country="США",
+            germination_period="10-15 дней",
+            color="зеленый"
+        )
+        expected_output = "Газончик, 321.0 руб. Остаток: 123 шт."
+        self.assertEqual(str(lawn_grass), expected_output)
