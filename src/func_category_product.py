@@ -52,12 +52,7 @@ class Product:
 
     def __add__(self, second_arg: 'Product') -> float:
         """
-        Складывает сумму 2ух продуктов одного типа
-        """
-        if not isinstance(second_arg, Product):
-            return NotImplemented
-        if type(self) is not type(second_arg):
-            raise TypeError("Вы складываете продукты разных категорий")
+
         return (self.price * self.quantity) + (second_arg.price * second_arg.quantity)
 
 
@@ -104,28 +99,3 @@ class Category:
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
-
-class Smartphone(Product):
-    """
-    Создание нового объекта смартфон(наследник)
-    """
-    def __init__(self, name: str, description: str, price: float, quantity: int, efficiency: float,
-                 model: str, memory: int, color: str) -> None:
-        super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency
-        self.model = model
-        self.memory = memory
-        self.color = color
-
-
-class LawnGrass(Product):
-    """
-    Создание нового объекта газонная трава(наследник)
-    """
-
-    def __init__(self, name: str, description: str, price: float, quantity: int, country: str,
-                 germination_period: str, color: str) -> None:
-        super().__init__(name, description, price, quantity)
-        self.country = country
-        self.germination_period = germination_period
-        self.color = color
