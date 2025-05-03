@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.func_category_product import Category, LawnGrass, Product, Smartphone
+from src.func_category_product import BaseProduct, Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct(unittest.TestCase):
@@ -90,7 +90,9 @@ class TestCategory(unittest.TestCase):
         product1: Product = Product(name="И не парить себе", description="Мозг писаниной", price=1045.0, quantity=32)
         category.add_product(product1)
         expected_output: str = "И не парить себе, 1045.0 руб. Остаток: 32 шт."
-        self.assertEqual(category.products.strip(), expected_output)
+        actual_output = str(category.products[0])
+
+        self.assertEqual(actual_output.strip(), expected_output)
 
     def test_product_count_property(self) -> None:
         """Тестим свойство produdct_count"""
@@ -185,3 +187,54 @@ class TestLawnGrass(unittest.TestCase):
         )
         expected_output = "Газончик, 321.0 руб. Остаток: 123 шт."
         self.assertEqual(str(lawn_grass), expected_output)
+
+
+class TestLoggingMixin(unittest.TestCase):
+    """Тесты для проверки работы миксина логирования."""
+
+    @patch('builtins.print')
+    def test_logging_mixin(self, mock_print: unittest.mock.Mock) -> None:
+        """
+        Проверяет, что при создании объекта Product вызывается
+        функция print с ожидаемым сообщением.
+        """
+        product = Product("Тестовый продукт", "Описание продукта", 100.0, 10)
+        mock_print.assert_called_once()
+        call_args = mock_print.call_args[0][0]
+        expected_output = "Создан объект Product с параметрами: 'Тестовый продукт', 'Описание продукта', 100.0, 10, "
+        self.assertEqual(call_args, expected_output)
+        self.assertEqual(product.name, "Тестовый продукт")
+        self.assertEqual(product.description, "Описание продукта")
+        self.assertEqual(product.price, 100.0)
+        self.assertEqual(product.quantity, 10)
+
+
+class TestBaseProduct(unittest.TestCase):
+
+    class ConcreteProduct(BaseProduct):
+        """Реализация абстрактного класса BaseProduct"""
+
+        def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+            """
+            Инициализирует объект
+            """
+            super().__init__(name, description, price, quantity)
+            self.price = price
+
+    def test_base_product_initialization(self) -> None:
+        """
+        Проверяет корректность инициализации объекта
+        """
+        product = self.ConcreteProduct("Test Product", "Description", 10.0, 5)
+        self.assertEqual(product.name, "Test Product")
+        self.assertEqual(product.description, "Description")
+        self.assertEqual(product.price, 10.0)
+        self.assertEqual(product.quantity, 5)
+
+    def test_base_product_abstract_class(self) -> None:
+        """
+        Проверяет, что попытка создать экземпляр абстрактного класса BaseProduct
+        вызывает исключение TypeError
+        """
+        with self.assertRaises(TypeError):
+            BaseProduct("Test Product", "Description", 10.0, 5)
