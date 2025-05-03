@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.func_category_product import Category, Product
+from src.func_category_product import Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct(unittest.TestCase):
@@ -110,3 +110,4 @@ class TestCategory(unittest.TestCase):
         category.add_product(product2)
         expected_output = "Телефоны, количество продуктов: 246 шт."
         self.assertEqual(str(category), expected_output)
+

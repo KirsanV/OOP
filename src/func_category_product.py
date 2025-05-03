@@ -52,10 +52,7 @@ class Product:
 
     def __add__(self, second_arg: 'Product') -> float:
         """
-        Складывает сумму 2ух продуктов
-        """
-        if not isinstance(second_arg, Product):
-            return NotImplemented
+
         return (self.price * self.quantity) + (second_arg.price * second_arg.quantity)
 
 
@@ -74,6 +71,9 @@ class Category:
         """
         Добавляет продукт в категорию и считает количество добавленных продуктов.
         """
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавлять продукты только одного типа")
+
         self.__products.append(product)
         Category.product_counter += 1
 
@@ -98,3 +98,4 @@ class Category:
         """
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
