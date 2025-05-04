@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.func_category_product import Category, LawnGrass, Product, Smartphone
+from src.func_category_product import BaseProduct, Category, LawnGrass, Product, Smartphone
 
 
 class TestProduct(unittest.TestCase):
@@ -90,7 +90,9 @@ class TestCategory(unittest.TestCase):
         product1: Product = Product(name="И не парить себе", description="Мозг писаниной", price=1045.0, quantity=32)
         category.add_product(product1)
         expected_output: str = "И не парить себе, 1045.0 руб. Остаток: 32 шт."
-        self.assertEqual(category.products.strip(), expected_output)
+        actual_output = str(category.products[0])
+
+        self.assertEqual(actual_output.strip(), expected_output)
 
     def test_product_count_property(self) -> None:
         """Тестим свойство produdct_count"""
@@ -110,4 +112,5 @@ class TestCategory(unittest.TestCase):
         category.add_product(product2)
         expected_output = "Телефоны, количество продуктов: 246 шт."
         self.assertEqual(str(category), expected_output)
+
 
