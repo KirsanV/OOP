@@ -33,6 +33,8 @@ class Product(LoggingMixin, BaseProduct):
     """
 
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         super().__init__(name, description, price, quantity)
         self.__price = price
 
@@ -101,6 +103,17 @@ class Category:
         self.description = description
         self.__products: List[BaseProduct] = products if products is not None else []
         Category.category_counter += 1
+
+    def middle_price(self) -> float:
+        """
+        Считает среднюю цену на все товары в категории
+        """
+        try:
+            total_price = sum(product.price * product.quantity for product in self.__products)
+            total_quantity = sum(product.quantity for product in self.__products)
+            return total_price / total_quantity if total_quantity > 0 else 0
+        except ZeroDivisionError:
+            return 0
 
     def add_product(self, product: Product) -> None:
         """

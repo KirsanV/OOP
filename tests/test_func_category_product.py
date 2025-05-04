@@ -7,6 +7,18 @@ from src.func_category_product import BaseProduct, Category, LawnGrass, Product,
 class TestProduct(unittest.TestCase):
     """Тесты для класса Product"""
 
+    def test_product_initialization_with_zero_quantity(self) -> None:
+        """Проверяет можно ли добавить продуктс нулевым количеством"""
+        with self.assertRaises(ValueError) as context:
+            Product(name="Чых", description="Пых", price=123.0, quantity=0)
+        self.assertEqual(str(context.exception), "Товар с нулевым количеством не может быть добавлен")
+
+    def test_product_initialization_with_negative_quantity(self) -> None:
+        """Проверяет можно ли добавить продукт с отрицаетльным количеством"""
+        with self.assertRaises(ValueError) as context:
+            Product(name="Чых", description="Пых", price=123.0, quantity=-532543453453453465645)
+        self.assertEqual(str(context.exception), "Товар с нулевым количеством не может быть добавлен")
+
     def test_product_initialization(self) -> None:
         """Проверяет инициализацию объекта Product"""
         product: Product = Product(name="Стиралочка", description="Я стираю ваши вещи, но не грехи", price=1111.0,
@@ -68,6 +80,12 @@ class TestProduct(unittest.TestCase):
 class TestCategory(unittest.TestCase):
     """Тесты для класса Category"""
 
+    def setUp(self) -> None:
+        """Собирает сет для тестов"""
+        self.category = Category(name="Test Category", description="Test Description")
+        self.product1 = Product(name="Product 1", description="Description 1", price=100.0, quantity=10)
+        self.product2 = Product(name="Product 2", description="Description 2", price=200.0, quantity=5)
+
     def test_category_initialization(self) -> None:
         """Проверяет инициализацию объекта Category"""
         category: Category = Category(name="Совершенно секретно", description="уауы")
@@ -112,6 +130,21 @@ class TestCategory(unittest.TestCase):
         category.add_product(product2)
         expected_output = "Телефоны, количество продуктов: 246 шт."
         self.assertEqual(str(category), expected_output)
+
+    def test_middle_price_with_products(self) -> None:
+        """Считает среднюю цену на продукты"""
+        self.category.add_product(self.product1)
+        self.category.add_product(self.product2)
+
+        expected_middle_price = (self.product1.price * self.product1.quantity +
+                                 self.product2.price * self.product2.quantity) / \
+                                (self.product1.quantity + self.product2.quantity)
+
+        self.assertAlmostEqual(self.category.middle_price(), expected_middle_price)
+
+    def test_middle_price_with_no_products(self) -> None:
+        """Возвращает ноль, если продуктов нет"""
+        self.assertEqual(self.category.middle_price(), 0)
 
 
 class TestSmartphone(unittest.TestCase):
