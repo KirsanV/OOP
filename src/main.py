@@ -1,4 +1,4 @@
-from src.func_category_product import Category, LawnGrass, Smartphone
+from src.func_category_product import Category, Product
 
 """
 Царь функция из урока 14.2 в ней также нет ничего особенного просто запускатор
